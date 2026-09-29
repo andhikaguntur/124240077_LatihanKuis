@@ -5,7 +5,6 @@ class LoginController {
     if (username == user1.username && password == user1.password) {
       return true;
     }
-
     return false;
   }
 }

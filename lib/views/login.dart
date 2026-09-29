@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lat_kuis/controllers/logincontroller.dart';
+import 'package:lat_kuis/root.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -26,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const Text('Login'),
+              const Text('Selamat datang di Gacoan!'),
 
               _usernameField(_usernameController),
 
@@ -39,18 +40,16 @@ class _LoginPageState extends State<LoginPage> {
                     _passwordController.text,
                   );
 
-                  setState(() {
-                    isLoggedin = result;
-                  });
-
-                  if (isLoggedin) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Login berhasil')),
+                  if (result) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Root()),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Username atau password salah'),
+                        backgroundColor: Colors.red,
                       ),
                     );
                   }

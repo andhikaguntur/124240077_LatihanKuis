@@ -20,7 +20,6 @@ class _RootState extends State<Root> {
       ProfilePage(username: widget.username),
     ];
     return Scaffold(
-      appBar: AppBar(title: const Text('Home Page')),
       body: pages[selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,

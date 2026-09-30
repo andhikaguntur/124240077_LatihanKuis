@@ -21,12 +21,17 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login Page')),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Image.network(
+                "https://upload.wikimedia.org/wikipedia/id/5/5c/LogoMieGacoan.png?utm_source=id.wikipedia.org&utm_campaign=index&utm_content=original",
+                width: 200,
+                height: 200,
+              ),
               const Text('Selamat datang di Gacoan!'),
 
               _usernameField(_usernameController),
@@ -34,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
               _passwordField(_passwordController),
 
               ElevatedButton(
+                child: const Text('Login'),
                 onPressed: () {
                   final username = _usernameController.text;
                   final result = _loginController.login(
@@ -57,7 +63,10 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   }
                 },
-                child: const Text('Login'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
+                  foregroundColor: Colors.white60,
+                ),
               ),
             ],
           ),
@@ -72,7 +81,9 @@ class _LoginPageState extends State<LoginPage> {
       child: TextField(
         controller: controller,
         decoration: const InputDecoration(
-          border: OutlineInputBorder(),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
           labelText: 'Username',
         ),
       ),
@@ -86,7 +97,9 @@ class _LoginPageState extends State<LoginPage> {
         controller: controller,
         obscureText: true,
         decoration: const InputDecoration(
-          border: OutlineInputBorder(),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
           labelText: 'Password',
         ),
       ),

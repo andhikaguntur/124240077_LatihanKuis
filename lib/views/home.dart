@@ -1,55 +1,120 @@
 import 'package:flutter/material.dart';
 import 'package:lat_kuis/views/detail.dart';
 
-import '../models/data.dart';
+import '../controllers/menucontroller.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late final AppMenuController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AppMenuController();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: menus.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DetailPage(menus: menus[index]),
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, _) {
+        final filteredMenus = controller.filteredMenus;
+
+        return Scaffold(
+          appBar: AppBar(title: const Text('Home Page')),
+          body: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: TextField(
+                  onChanged: controller.setSearch,
+                  decoration: InputDecoration(
+                    hintText: 'Search menu',
+                    prefixIcon: const Icon(Icons.search),
+                    filled: true,
+                    fillColor: Colors.grey[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
               ),
-            );
-          },
-          title: Text(menus[index].name),
-          subtitle: Text(menus[index].price),
-          leading: Image.network(menus[index].image, width: 100, height: 100),
-          trailing: Icon(Icons.arrow_forward_ios),
+              SizedBox(
+                height: 48,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  itemCount: controller.categories.length,
+                  itemBuilder: (context, index) {
+                    final category = controller.categories[index];
+                    final isSelected = controller.selectedCategory == category;
+
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: ChoiceChip(
+                        label: Text(category),
+                        selected: isSelected,
+                        onSelected: (_) => controller.setCategory(category),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: filteredMenus.length,
+                  itemBuilder: (context, index) {
+                    final menu = filteredMenus[index];
+                    final isFavorite = controller.isFavorite(menu.id);
+
+                    return ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailPage(menus: menu),
+                          ),
+                        );
+                      },
+                      title: Text(menu.name),
+                      subtitle: Text(menu.price),
+                      leading: Image.network(menu.image, width: 90, height: 90),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            onPressed: () => controller.toggleFavorite(menu.id),
+                            icon: Icon(
+                              isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: isFavorite ? Colors.red : Colors.grey,
+                            ),
+                          ),
+                          const Icon(Icons.arrow_forward_ios, size: 16),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: Text("Home"),
-    //   ),
-    //   body: ListView.builder(
-    //     itemCount: products.length,
-    //     itemBuilder:(context, index) {
-    //       return ListTile(
-    //         onTap:() {
-    //           Navigator.push(context,
-    //           MaterialPageRoute(builder: (context) => DetailPage(product: products[index])));
-    //         },
-    //         title: Text(products[index].name),
-    //         subtitle: Text("Rp ${products[index].price}"),
-    //         leading: Image.network(
-    //           products[index].image,
-    //           width: 100,
-    //           height: 100,
-    //         ),
-    //         trailing: Icon(Icons.arrow_forward_ios)
-    //       );
-    //     },
-    //   ),
-    // );
   }
 }

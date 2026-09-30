@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
             );
           },
           title: Text(menus[index].name),
-          subtitle: Text("Rp ${menus[index].price}"),
+          subtitle: Text(menus[index].price),
           leading: Image.network(menus[index].image, width: 100, height: 100),
           trailing: Icon(Icons.arrow_forward_ios),
         );

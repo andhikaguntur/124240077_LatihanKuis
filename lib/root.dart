@@ -3,7 +3,8 @@ import 'package:lat_kuis/views/home.dart';
 import 'package:lat_kuis/views/profile.dart';
 
 class Root extends StatefulWidget {
-  const Root({super.key});
+  final String username;
+  const Root({super.key, required this.username});
 
   @override
   State<Root> createState() => _RootState();
@@ -14,7 +15,10 @@ class _RootState extends State<Root> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> pages = [const HomePage(), const ProfilePage()];
+    final List<Widget> pages = [
+      const HomePage(),
+      ProfilePage(username: widget.username),
+    ];
     return Scaffold(
       appBar: AppBar(title: const Text('Home Page')),
       body: pages[selectedIndex],

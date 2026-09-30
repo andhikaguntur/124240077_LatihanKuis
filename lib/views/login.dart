@@ -35,15 +35,18 @@ class _LoginPageState extends State<LoginPage> {
 
               ElevatedButton(
                 onPressed: () {
-                  bool result = _loginController.login(
-                    _usernameController.text,
+                  final username = _usernameController.text;
+                  final result = _loginController.login(
+                    username,
                     _passwordController.text,
                   );
 
                   if (result) {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const Root()),
+                      MaterialPageRoute(
+                        builder: (_) => Root(username: username),
+                      ),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(

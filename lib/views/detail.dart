@@ -10,9 +10,7 @@ class DetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(menus.name)),
-      body: Column(
-        children: [Image.network(menus.image), Text("Rp ${menus.price}")],
-      ),
+      body: Column(children: [Image.network(menus.image), Text(menus.price)]),
     );
   }
 }
